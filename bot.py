@@ -20,7 +20,7 @@ import os
 
 OWNER_ID = 313344916
 
-TOKEN = "5440019738:AAF4S4aVe1BZ-KnW_MuL687NJlSqzjUw-r8" # OR os.environ['token']
+TOKEN = os.environ['token']
 
 app = Flask(__name__)
 

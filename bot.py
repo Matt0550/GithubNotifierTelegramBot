@@ -57,124 +57,98 @@ sendMessageOwner("✅ Bot started and ready to use") # Comment this line if you 
 @app.route('/webhook', methods=['POST'])
 @limiter.limit("5/minute")
 def webhook():
-    data = request.get_json()
+    data = request.get_data()
+    data = json.loads(data)
     print(data)
-
-    if data['action'] == 'opened':
+    print(data.get('action'))
+    # ISSUE
+    if data['action'] == 'opened' and data.get("issue") is not None:
         # If the issue is opened, send a message to the owner id
-        sendMessageOwner("📝 New issue opened\n\nIssue title: %s\n\nLink: %s" % (data['issue']['title'], data['issue']['html_url']))
-    elif data['action'] == 'closed':
+        sendMessageOwner("📝 New issue opened:\nIssue title: %s\nIssue url: %s" % (data["issue"]["title"], data["issue"]["html_url"]))
+    elif data['action'] == 'closed' and data.get("issue") is not None:
         # If the issue is closed, send a message to the owner id
-        sendMessageOwner("📝 Issue closed\n\nIssue title: %s\n\nLink: %s" % (data['issue']['title'], data['issue']['html_url']))
-    elif data['action'] == 'reopened':
-        # If the issue is reopened, send a message to the owner id
-        sendMessageOwner("📝 Issue reopened\n\nIssue title: %s\n\nLink: %s" % (data['issue']['title'], data['issue']['html_url']))
-    elif data['action'] == 'labeled':
-        # If the issue is labeled, send a message to the owner id
-        sendMessageOwner("📝 Issue labeled\n\nIssue title: %s\n\nLink: %s" % (data['issue']['title'], data['issue']['html_url']))
-    elif data['action'] == 'unlabeled':
-        # If the issue is unlabeled, send a message to the owner id
-        sendMessageOwner("📝 Issue unlabeled\n\nIssue title: %s\n\nLink: %s" % (data['issue']['title'], data['issue']['html_url']))
-    elif data['action'] == 'assigned':
+        sendMessageOwner("📝 Issue closed:\nIssue title: %s\nIssue url: %s" % (data["issue"]["title"], data["issue"]["html_url"]))
+    elif data['action'] == 'deleted' and data.get("issue") is not None:
+        # If the issue is deleted, send a message to the owner id
+        sendMessageOwner("📝 Issue deleted:\nIssue title: %s\nIssue url: %s" % (data["issue"]["title"], data["issue"]["html_url"]))
+    elif data['action'] == 'assigned' and data.get("issue") is not None:
         # If the issue is assigned, send a message to the owner id
-        sendMessageOwner("📝 Issue assigned\n\nIssue title: %s\n\nLink: %s" % (data['issue']['title'], data['issue']['html_url']))
-    elif data['action'] == 'unassigned':
+        sendMessageOwner("📝 Issue assigned:\nIssue title: %s\nIssue url: %s" % (data["issue"]["title"], data["issue"]["html_url"]))
+    elif data['action'] == 'unassigned' and data.get("issue") is not None:
         # If the issue is unassigned, send a message to the owner id
-        sendMessageOwner("📝 Issue unassigned\n\nIssue title: %s\n\nLink: %s" % (data['issue']['title'], data['issue']['html_url']))
-    elif data['action'] == 'synchronize':
+        sendMessageOwner("📝 Issue unassigned:\nIssue title: %s\nIssue url: %s" % (data["issue"]["title"], data["issue"]["html_url"]))
+    elif data['action'] == 'labeled' and data.get("issue") is not None:
+        # If the issue is labeled, send a message to the owner id
+        sendMessageOwner("📝 Issue labeled:\nIssue title: %s\nIssue url: %s\nLabel: %s" % (data["issue"]["title"], data["issue"]["html_url"], data["label"]["name"]))
+    elif data['action'] == 'unlabeled' and data.get("issue") is not None:
+        # If the issue is unlabeled, send a message to the owner id
+        sendMessageOwner("📝 Issue unlabeled:\nIssue title: %s\nIssue url: %s" % (data["issue"]["title"], data["issue"]["html_url"]))
+    elif data['action'] == 'synchronize' and data.get("issue") is not None:
         # If the issue is synchronized, send a message to the owner id
-        sendMessageOwner("📝 Issue synchronized\n\nIssue title: %s\n\nLink: %s" % (data['issue']['title'], data['issue']['html_url']))
-    elif data['action'] == 'review_requested':
+        sendMessageOwner("📝 Issue synchronized:\nIssue title: %s\nIssue url: %s" % (data["issue"]["title"], data["issue"]["html_url"]))
+    elif data['action'] == 'reopened' and data.get("issue") is not None:
+        # If the issue is reopened, send a message to the owner id
+        sendMessageOwner("📝 Issue reopened:\nIssue title: %s\nIssue url: %s" % (data["issue"]["title"], data["issue"]["html_url"]))
+    elif data['action'] == 'review_requested' and data.get("issue") is not None:
         # If the issue is review requested, send a message to the owner id
-        sendMessageOwner("📝 Review requested\n\nIssue title: %s\n\nLink: %s" % (data['issue']['title'], data['issue']['html_url']))
-    elif data['action'] == 'review_request_removed':
+        sendMessageOwner("📝 Issue review requested:\nIssue title: %s\nIssue url: %s" % (data["issue"]["title"], data["issue"]["html_url"]))
+    elif data['action'] == 'review_request_removed' and data.get("issue") is not None:
         # If the issue is review request removed, send a message to the owner id
-        sendMessageOwner("📝 Review request removed\n\nIssue title: %s\n\nLink: %s" % (data['issue']['title'], data['issue']['html_url']))
-    elif data['action'] == 'review_request_approved':
-        # If the issue is review request approved, send a message to the owner id
-        sendMessageOwner("📝 Review request approved\n\nIssue title: %s\n\nLink: %s" % (data['issue']['title'], data['issue']['html_url']))
-    elif data['action'] == 'review_request_changes_requested':
-        # If the issue is review request changes requested, send a message to the owner id
-        sendMessageOwner("📝 Review request changes requested\n\nIssue title: %s\n\nLink: %s" % (data['issue']['title'], data['issue']['html_url']))
-    elif data['action'] == 'review_request_changes_approved':
-        # If the issue is review request changes approved, send a message to the owner id
-        sendMessageOwner("📝 Review request changes approved\n\nIssue title: %s\n\nLink: %s" % (data['issue']['title'], data['issue']['html_url']))
-    elif data['action'] == 'review_request_changes_rejected':
-        # If the issue is review request changes rejected, send a message to the owner id
-        sendMessageOwner("📝 Review request changes rejected\n\nIssue title: %s\n\nLink: %s" % (data['issue']['title'], data['issue']['html_url']))
-    elif data['action'] == 'review_request_dismissed':
-        # If the issue is review request dismissed, send a message to the owner id
-        sendMessageOwner("📝 Review request dismissed\n\nIssue title: %s\n\nLink: %s" % (data['issue']['title'], data['issue']['html_url']))
-    elif data['action'] == 'review_request_removed':
-        # If the issue is review request removed, send a message to the owner id
-        sendMessageOwner("📝 Review request removed\n\nIssue title: %s\n\nLink: %s" % (data['issue']['title'], data['issue']['html_url']))
-    elif data['action'] == 'review_request_commented':
-        # If the issue is review request commented, send a message to the owner id
-        sendMessageOwner("📝 Review request commented\n\nIssue title: %s\n\nLink: %s" % (data['issue']['title'], data['issue']['html_url']))
+        sendMessageOwner("📝 Issue review request removed:\nIssue title: %s\nIssue url: %s" % (data["issue"]["title"], data["issue"]["html_url"]))
+    elif data['action'] == 'locked' and data.get("issue") is not None:
+        # If the issue is locked, send a message to the owner id
+        sendMessageOwner("📝 Issue locked:\nIssue title: %s\nIssue url: %s\nLock reason: %s" % (data["issue"]["title"], data["issue"]["html_url"], data["lock_reason"]))
+    elif data['action'] == 'unlocked' and data.get("issue") is not None:
+        # If the issue is unlocked, send a message to the owner id
+        sendMessageOwner("📝 Issue unlocked:\nIssue title: %s\nIssue url: %s" % (data["issue"]["title"], data["issue"]["html_url"]))
+    elif data['action'] == 'pinned' and data.get("issue") is not None:
+        # If the issue is pinned, send a message to the owner id
+        sendMessageOwner("📝 Issue pinned:\nIssue title: %s\nIssue url: %s" % (data["issue"]["title"], data["issue"]["html_url"]))
+    elif data['action'] == 'unpinned' and data.get("issue") is not None:
+        # If the issue is unpinned, send a message to the owner id
+        sendMessageOwner("📝 Issue unpinned:\nIssue title: %s\nIssue url: %s" % (data["issue"]["title"], data["issue"]["html_url"]))
 
-    # On commit
-    elif data['action'] == 'committed':
-        # If the commit is made, send a message to the owner id
-        sendMessageOwner("📝 Commit made\n\nCommit message: %s\n\nLink: %s" % (data['commit']['message'], data['commit']['url']))
-    elif data['action'] == 'created':
-        # If the commit is created, send a message to the owner id
-        sendMessageOwner("📝 Commit created\n\nCommit message: %s\n\nLink: %s" % (data['commit']['message'], data['commit']['url']))
-    elif data['action'] == 'deleted':
-        # If the commit is deleted, send a message to the owner id
-        sendMessageOwner("📝 Commit deleted\n\nCommit message: %s\n\nLink: %s" % (data['commit']['message'], data['commit']['url']))
-    elif data['action'] == 'restored':
-        # If the commit is restored, send a message to the owner id
-        sendMessageOwner("📝 Commit restored\n\nCommit message: %s\n\nLink: %s" % (data['commit']['message'], data['commit']['url']))
-    elif data['action'] == 'referenced':
-        # If the commit is referenced, send a message to the owner id
-        sendMessageOwner("📝 Commit referenced\n\nCommit message: %s\n\nLink: %s" % (data['commit']['message'], data['commit']['url']))
-    elif data['action'] == 'unreferenced':
-        # If the commit is unreferenced, send a message to the owner id
-        sendMessageOwner("📝 Commit unreferenced\n\nCommit message: %s\n\nLink: %s" % (data['commit']['message'], data['commit']['url']))
-    elif data['action'] == 'renamed':
-        # If the commit is renamed, send a message to the owner id
-        sendMessageOwner("📝 Commit renamed\n\nCommit message: %s\n\nLink: %s" % (data['commit']['message'], data['commit']['url']))
-    elif data['action'] == 'edited':
-        # If the commit is edited, send a message to the owner id
-        sendMessageOwner("📝 Commit edited\n\nCommit message: %s\n\nLink: %s" % (data['commit']['message'], data['commit']['url']))
-    elif data['action'] == 'commented':
-        # If the commit is commented, send a message to the owner id
-        sendMessageOwner("📝 Commit commented\n\nCommit message: %s\n\nLink: %s" % (data['commit']['message'], data['commit']['url']))
-    elif data['action'] == 'labeled':
-        # If the commit is labeled, send a message to the owner id
-        sendMessageOwner("📝 Commit labeled\n\nCommit message: %s\n\nLink: %s" % (data['commit']['message'], data['commit']['url']))
-    elif data['action'] == 'unlabeled':
-        # If the commit is unlabeled, send a message to the owner id
-        sendMessageOwner("📝 Commit unlabeled\n\nCommit message: %s\n\nLink: %s" % (data['commit']['message'], data['commit']['url']))
-    elif data['action'] == 'milestoned':
-        # If the commit is milestoned, send a message to the owner id
-        sendMessageOwner("📝 Commit milestoned\n\nCommit message: %s\n\nLink: %s" % (data['commit']['message'], data['commit']['url']))
-    elif data['action'] == 'demilestoned':
-        # If the commit is demilestoned, send a message to the owner id
-        sendMessageOwner("📝 Commit demilestoned\n\nCommit message: %s\n\nLink: %s" % (data['commit']['message'], data['commit']['url']))
-    elif data['action'] == 'pinned':
-        # If the commit is pinned, send a message to the owner id
-        sendMessageOwner("📝 Commit pinned\n\nCommit message: %s\n\nLink: %s" % (data['commit']['message'], data['commit']['url']))
-    elif data['action'] == 'unpinned':
-        # If the commit is unpinned, send a message to the owner id
-        sendMessageOwner("📝 Commit unpinned\n\nCommit message: %s\n\nLink: %s" % (data['commit']['message'], data['commit']['url']))
-    elif data['action'] == 'locked':
-        # If the commit is locked, send a message to the owner id
-        sendMessageOwner("📝 Commit locked\n\nCommit message: %s\n\nLink: %s" % (data['commit']['message'], data['commit']['url']))
-    elif data['action'] == 'unlocked':
-        # If the commit is unlocked, send a message to the owner id
-        sendMessageOwner("📝 Commit unlocked\n\nCommit message: %s\n\nLink: %s" % (data['commit']['message'], data['commit']['url']))
-    elif data['action'] == 'review_requested':
-        # If the commit is review requested, send a message to the owner id
-        sendMessageOwner("📝 Commit review requested\n\nCommit message: %s\n\nLink: %s" % (data['commit']['message'], data['commit']['url']))
-    elif data['action'] == 'review_request_removed':
-        # If the commit is review request removed, send a message to the owner id
-        sendMessageOwner("📝 Commit review request removed\n\nCommit message: %s\n\nLink: %s" % (data['commit']['message'], data['commit']['url']))     
-    
+    # MILESTONE
+    elif data['action'] == 'created' and data.get("milestone") is not None:
+        # If the milestone is created, send a message to the owner id
+        sendMessageOwner("📝 New milestone created:\nMilestone title: %s\nMilestone url: %s" % (data["milestone"]["title"], data["milestone"]["html_url"]))
+    elif data['action'] == 'closed' and data.get("milestone") is not None:
+        # If the milestone is closed, send a message to the owner id
+        sendMessageOwner("📝 Milestone closed:\nMilestone title: %s\nMilestone url: %s" % (data["milestone"]["title"], data["milestone"]["html_url"]))
+    elif data['action'] == 'deleted' and data.get("milestone") is not None:
+        # If the milestone is deleted, send a message to the owner id
+        sendMessageOwner("📝 Milestone deleted:\nMilestone title: %s\nMilestone url: %s" % (data["milestone"]["title"], data["milestone"]["html_url"]))
+    elif data['action'] == 'opened' and data.get("milestone") is not None:
+        # If the milestone is opened, send a message to the owner id
+        sendMessageOwner("📝 Milestone opened:\nMilestone title: %s\nMilestone url: %s" % (data["milestone"]["title"], data["milestone"]["html_url"]))
+    elif data['action'] == 'reopened' and data.get("milestone") is not None:
+        # If the milestone is reopened, send a message to the owner id
+        sendMessageOwner("📝 Milestone reopened:\nMilestone title: %s\nMilestone url: %s" % (data["milestone"]["title"], data["milestone"]["html_url"]))
+    elif data['action'] == 'edited' and data.get("milestone") is not None:
+        # If the milestone is edited, send a message to the owner id
+        sendMessageOwner("📝 Milestone edited:\nMilestone title: %s\nMilestone url: %s" % (data["milestone"]["title"], data["milestone"]["html_url"]))
+        
+    # PULL REQUEST
+    elif data['action'] == 'opened' and data.get("pull_request") is not None:
+        # If the pull request is opened, send a message to the owner id
+        sendMessageOwner("📝 New pull request opened:\nPull request title: %s\nPull request url: %s" % (data["pull_request"]["title"], data["pull_request"]["html_url"]))
+    elif data['action'] == 'closed' and data.get("pull_request") is not None:
+        # If the pull request is closed, send a message to the owner id
+        sendMessageOwner("📝 Pull request closed:\nPull request title: %s\nPull request url: %s" % (data["pull_request"]["title"], data["pull_request"]["html_url"]))
+    elif data['action'] == 'deleted' and data.get("pull_request") is not None:
+        # If the pull request is deleted, send a message to the owner id
+        sendMessageOwner("📝 Pull request deleted:\nPull request title: %s\nPull request url: %s" % (data["pull_request"]["title"], data["pull_request"]["html_url"]))
 
-    # If the action is not one of the above, send a message to the owner id
-    else:   
-        sendMessageOwner("📝 Issue action: %s" % data['action'])
+    elif data['action'] == 'created' and data.get("starred_at") is not None:
+        # If the repository is starred, send a message to the owner id
+        sendMessageOwner("💚 New repository starred:\nRepository name: %s\nRepository url: %s" % (data["repository"]["name"], data["repository"]["html_url"]))
+    elif data['action'] == 'deleted' and data.get("starred_at") != "":
+        # If the repository is unstarred, send a message to the owner id
+        sendMessageOwner("💚 Repository unstarred:\nRepository name: %s\nRepository url: %s" % (data["repository"]["name"], data["repository"]["html_url"]))
+
+
+    else:
+        sendMessageOwner("📝 Action: %s" % data['action'])
 
     return Response("OK", status=200)
 

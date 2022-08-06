@@ -107,7 +107,19 @@ def webhook():
     elif data.get('action') == 'unpinned' and data.get("issue") is not None:
         # If the issue is unpinned, send a message to the owner id
         sendMessageOwner("📝 Issue unpinned:\nIssue title: %s\nIssue url: %s" % (data["issue"]["title"], data["issue"]["html_url"]))
-
+    elif data.get('action') == 'edited' and data.get("issue") is not None:
+        # If the issue is edited, send a message to the owner id
+        sendMessageOwner("📝 Issue edited:\nIssue title: %s\nIssue url: %s" % (data["issue"]["title"], data["issue"]["html_url"]))
+    elif data.get('action') == 'milestoned' and data.get("issue") is not None:
+        # If the issue is milestoned, send a message to the owner id
+        sendMessageOwner("📝 Issue milestoned:\nIssue title: %s\nIssue url: %s" % (data["issue"]["title"], data["issue"]["html_url"]))
+    elif data.get('action') == 'demilestoned' and data.get("issue") is not None:
+        # If the issue is demilestoned, send a message to the owner id
+        sendMessageOwner("📝 Issue demilestoned:\nIssue title: %s\nIssue url: %s" % (data["issue"]["title"], data["issue"]["html_url"]))
+    elif data.get('action') == 'transferred' and data.get("issue") is not None:
+        # If the issue is transferred, send a message to the owner id
+        sendMessageOwner("📝 Issue transferred:\nIssue title: %s\nIssue url: %s" % (data["issue"]["title"], data["issue"]["html_url"]))
+    
     # MILESTONE
     elif data.get('action') == 'created' and data.get("milestone") is not None:
         # If the milestone is created, send a message to the owner id
@@ -135,11 +147,51 @@ def webhook():
     elif data.get('action') == 'closed' and data.get("pull_request") is not None:
         # If the pull request is closed, send a message to the owner id
         sendMessageOwner("📝 Pull request closed:\nPull request title: %s\nPull request url: %s" % (data["pull_request"]["title"], data["pull_request"]["html_url"]))
-    elif data.get('action') == 'deleted' and data.get("pull_request") is not None:
-        # If the pull request is deleted, send a message to the owner id
-        sendMessageOwner("📝 Pull request deleted:\nPull request title: %s\nPull request url: %s" % (data["pull_request"]["title"], data["pull_request"]["html_url"]))
+    elif data.get('action') == 'reopened' and data.get("pull_request") is not None:
+        # If the pull request is reopened, send a message to the owner id
+        sendMessageOwner("📝 Pull request reopened:\nPull request title: %s\nPull request url: %s" % (data["pull_request"]["title"], data["pull_request"]["html_url"]))
+    elif data.get('action') == 'edited' and data.get("pull_request") is not None:
+        # If the pull request is edited, send a message to the owner id
+        sendMessageOwner("📝 Pull request edited:\nPull request title: %s\nPull request url: %s" % (data["pull_request"]["title"], data["pull_request"]["html_url"]))
+    elif data.get('action') == 'assigned' and data.get("pull_request") is not None:
+        # If the pull request is assigned, send a message to the owner id
+        sendMessageOwner("📝 Pull request assigned:\nPull request title: %s\nPull request url: %s" % (data["pull_request"]["title"], data["pull_request"]["html_url"]))
+    elif data.get('action') == 'unassigned' and data.get("pull_request") is not None:
+        # If the pull request is unassigned, send a message to the owner id
+        sendMessageOwner("📝 Pull request unassigned:\nPull request title: %s\nPull request url: %s" % (data["pull_request"]["title"], data["pull_request"]["html_url"]))
+    elif data.get('action') == 'review_requested' and data.get("pull_request") is not None:
+        # If the pull request is review requested, send a message to the owner id
+        sendMessageOwner("📝 Pull request review requested:\nPull request title: %s\nPull request url: %s" % (data["pull_request"]["title"], data["pull_request"]["html_url"]))
+    elif data.get('action') == 'review_request_removed' and data.get("pull_request") is not None:
+        # If the pull request is review request removed, send a message to the owner id
+        sendMessageOwner("📝 Pull request review request removed:\nPull request title: %s\nPull request url: %s" % (data["pull_request"]["title"], data["pull_request"]["html_url"]))
+    elif data.get('action') == 'labeled' and data.get("pull_request") is not None:
+        # If the pull request is labeled, send a message to the owner id
+        sendMessageOwner("📝 Pull request labeled:\nPull request title: %s\nPull request url: %s" % (data["pull_request"]["title"], data["pull_request"]["html_url"]))
+    elif data.get('action') == 'unlabeled' and data.get("pull_request") is not None:
+        # If the pull request is unlabeled, send a message to the owner id
+        sendMessageOwner("📝 Pull request unlabeled:\nPull request title: %s\nPull request url: %s" % (data["pull_request"]["title"], data["pull_request"]["html_url"]))
+    elif data.get('action') == 'synchronize' and data.get("pull_request") is not None:
+        # If the pull request is synchronized, send a message to the owner id
+        sendMessageOwner("📝 Pull request synchronized:\nPull request title: %s\nPull request url: %s" % (data["pull_request"]["title"], data["pull_request"]["html_url"]))
+    elif data.get('action') == 'ready_for_review' and data.get("pull_request") is not None:
+        # If the pull request is ready for review, send a message to the owner id
+        sendMessageOwner("📝 Pull request ready for review:\nPull request title: %s\nPull request url: %s" % (data["pull_request"]["title"], data["pull_request"]["html_url"]))
+    elif data.get('action') == 'locked' and data.get("pull_request") is not None:
+        # If the pull request is locked, send a message to the owner id
+        sendMessageOwner("📝 Pull request locked:\nPull request title: %s\nPull request url: %s" % (data["pull_request"]["title"], data["pull_request"]["html_url"]))
+    elif data.get('action') == 'unlocked' and data.get("pull_request") is not None:
+        # If the pull request is unlocked, send a message to the owner id
+        sendMessageOwner("📝 Pull request unlocked:\nPull request title: %s\nPull request url: %s" % (data["pull_request"]["title"], data["pull_request"]["html_url"]))
+    elif data.get('action') == 'milestoned' and data.get("pull_request") is not None:
+        # If the pull request is milestoned, send a message to the owner id
+        sendMessageOwner("📝 Pull request milestoned:\nPull request title: %s\nPull request url: %s" % (data["pull_request"]["title"], data["pull_request"]["html_url"]))
+    elif data.get('action') == 'demilestoned' and data.get("pull_request") is not None:
+        # If the pull request is demilestoned, send a message to the owner id
+        sendMessageOwner("📝 Pull request demilestoned:\nPull request title: %s\nPull request url: %s" % (data["pull_request"]["title"], data["pull_request"]["html_url"]))
 
-    elif data.get('action') == 'created' and data.get("starred_at") is not None:
+    # STAR
+    elif data.get('action') == 'created' or data.get('action') == 'started' and data.get("starred_at") is not None:
         # If the repository is starred, send a message to the owner id
         sendMessageOwner("💚 New repository starred:\nRepository name: %s\nRepository url: %s" % (data["repository"]["name"], data["repository"]["html_url"]))
     elif data.get('action') == 'deleted' and data.get("starred_at") != "":
@@ -160,9 +212,8 @@ def webhook():
         # If the repository is edited, send a message to the owner id
         sendMessageOwner("📝 Repository edited:\nRepository name: %s\nRepository url: %s" % (data["repository"]["name"], data["repository"]["html_url"]))
 
-
     else:
-        sendMessageOwner("📝 Action: %s" % data.get('action'))
+        sendMessageOwner("📝 Action: %s\nRepository name: %s\nRepository url: %s" % (data["action"], data["repository"]["name"], data["repository"]["html_url"]))
 
     return Response("OK", status=200)
 

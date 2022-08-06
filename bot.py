@@ -149,7 +149,7 @@ def webhook():
     # COMMIT
     elif data.get('commits') is not None:
         # If the repository is pushed, send a message to the owner id
-        sendMessageOwner("📝 New commit pushed:\nCommit message: %s\nCommit url: %s" % (data["commits"][0]["message"], data["commits"][0]["url"]))
+        sendMessageOwner("📝 New commit pushed:\nCommit message: %s\nCommitter: %s\nCommit url: %s" % (data["commits"][0]["message"], data["commits"][0]["committer"]["name"], data["commits"][0]["url"]))
     elif data.get('action') == 'created' and data.get("ref") is not None:
         # If the repository is created, send a message to the owner id
         sendMessageOwner("📝 New repository created:\nRepository name: %s\nRepository url: %s" % (data["repository"]["name"], data["repository"]["html_url"]))
